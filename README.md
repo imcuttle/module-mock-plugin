@@ -9,6 +9,32 @@
 
 > The plugin on enhanced-resolver for easy mock
 
+## Why use it?
+
+One day your project (using React) needs to change the browser's default hovering title behavior as a whole.
+![1L5qn1.png](https://s2.ax1x.com/2020/02/13/1L5qn1.png)
+
+This is a lot of work, so the implementation of small modifications is mock react module, so that the place where react is imported in the project points to our custom react module.
+
+```text
+src/
+    __mock/
+        react/ # custom react
+node_modules/
+    react/
+```
+
+- `src/__mock/react/index.js`
+
+```javascript
+import React from 'react'
+export * from 'react'
+
+export function createElement(type, props, children) {
+  // ... custom code
+}
+```
+
 ## Installation
 
 ```bash
@@ -17,10 +43,16 @@ npm install module-mock-plugin
 yarn add module-mock-plugin
 ```
 
-## Usage
+## Use in webpack
 
 ```javascript
 const ModuleMockPlugin = require('module-mock-plugin')
+
+const webpackConfig = {
+  resolve: {
+    plugins: [new ModuleMockPlugin()]
+  }
+}
 ```
 
 ## Options
