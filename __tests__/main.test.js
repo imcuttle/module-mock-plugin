@@ -16,7 +16,7 @@ const sync = resolve.create.sync({
   ...resolverOptions(),
   plugins: [
     new Plugin({
-      root: fixture(''),
+      mockFilePath: '__mocks__',
       silent: false
     })
   ]
@@ -27,7 +27,7 @@ const async = resolve.create({
   useSyncFileSystemCalls: false,
   plugins: [
     new Plugin({
-      root: fixture(''),
+      mockFilePath: '__mocks__',
       silent: false
     })
   ]
@@ -77,6 +77,26 @@ describe('module-mock-plugin', function() {
         'mobx'
       )
     ).toThrowErrorMatchingInlineSnapshot(`"Can't resolve 'mobx' in ''"`)
+  })
+
+  it('should nest assigned mockFilePath', function() {
+    const sync = resolve.create.sync({
+      ...resolverOptions(),
+      plugins: [
+        new Plugin({
+          mockFilePath: fixture('module/__mocks__')
+        })
+      ]
+    })
+    expect(
+      sync(
+        {
+          issuer: fixture('__mocks__/react.js')
+        },
+        '',
+        'mobx'
+      )
+    ).toBe(fixture('module/__mocks__/mobx/index.js'))
   })
 
   it('should nest', function() {

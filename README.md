@@ -20,8 +20,37 @@ yarn add module-mock-plugin
 ## Usage
 
 ```javascript
-const moduleMockPlugin = require('module-mock-plugin')
+const ModuleMockPlugin = require('module-mock-plugin')
 ```
+
+## Options
+
+Extends the options from [absolute-module-mapper-plugin](https://github.com/imcuttle/absolute-module-mapper-plugin)
+
+#### `mockFilePath`
+
+The path of mock directory, it could be inferred as the closest file from origin file, or assigning special file path by absolute path.
+
+- Type: `string`
+- Default: `__mocks`
+
+#### `include`
+
+The included paths for mapping
+
+- Type: `Array<string|Function|RegExp>`
+- Default: `[/^((?!\/node_modules\/).)*$/]`
+
+#### `exclude`
+
+The excluded paths for mapping
+
+- Type: `Array<string|Function|RegExp>`
+- Default: `[]`
+
+## Related
+
+- [absolute-module-mapper-plugin](https://github.com/imcuttle/absolute-module-mapper-plugin) - The plugin on enhanced-resolver to map module path.
 
 ## Contributing
 

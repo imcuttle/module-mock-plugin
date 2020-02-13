@@ -26,8 +26,16 @@ function findUp(name, { dir, fs, allowFile = true, allowDirectory = true, ignore
       return cb(err)
     }
 
-    if (names.includes(name)) {
-      const path = nps.join(dir, name)
+    let path
+    for (const fileBasename of names) {
+      const pathPath = nps.join(dir, fileBasename)
+      if (pathPath.endsWith(name)) {
+        path = pathPath;
+        break
+      }
+    }
+
+    if (path) {
       isValid(path, (err, valid) => {
         if (err) {
           return cb(err)
@@ -77,13 +85,20 @@ function findUpSync(name, { dir, fs, allowFile = true, allowDirectory = true } =
   }
 
   const names = fs.readdirSync(dir)
-  if (names.includes(name)) {
-    const path = nps.join(dir, name)
-    if (isValid(path)) {
-      return {
-        dir,
-        path
-      }
+
+  let path
+  for (const fileBasename of names) {
+    const pathPath = nps.join(dir, fileBasename)
+    if (pathPath.endsWith(name)) {
+      path = pathPath;
+      break
+    }
+  }
+
+  if (path && isValid(path)) {
+    return {
+      dir,
+      path
     }
   }
 
