@@ -52,6 +52,6 @@
     "pretty-quick": "^2.0.1"
   },
   "dependencies": {
-    "absolute-module-mapper-plugin": "^1.2.3"
+    "absolute-module-mapper-plugin": "^1.2.4"
   }
 }

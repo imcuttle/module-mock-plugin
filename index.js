@@ -16,7 +16,7 @@ const createRequestMapper = (opts, resolver) => {
   return (request, { context = {}, ...rest } = {}, cb) => {
     const issuer = context.issuer
 
-    if (nps.isAbsolute(request) || request.trim().startsWith('./')) {
+    if (nps.isAbsolute(request) || request.trim().startsWith('./') || request.trim().startsWith('..')) {
       return cb(null, request)
     }
 
@@ -35,7 +35,6 @@ const createRequestMapper = (opts, resolver) => {
         {},
         (error, resolvedPath) => {
           if (error) {
-            !opts.silent && logger.error(error)
             return cb(null, request)
           } else {
             return cb(null, resolvedPath || request)
@@ -54,17 +53,14 @@ const createRequestMapper = (opts, resolver) => {
       },
       (error, { path } = {}) => {
         if (error) {
-          !opts.silent && logger.error(error)
           return cb(null, request)
         } else {
           if (!path) {
-            !opts.silent && logger.error(`The nearest folder was not found which named '${opts.mockFilePath}'`)
             return cb(null, request)
           }
 
           resolver.resolve({ ...context, moduleMockPlugin: true }, path, './' + request, {}, (error, resolvedPath) => {
             if (error) {
-              !opts.silent && logger.error(error)
               return cb(null, request)
             } else {
               return cb(null, resolvedPath || request)

@@ -1,8 +1,16 @@
 const nps = require('path')
 
-function findUp(name, { dir, fs, allowFile = true, allowDirectory = true, ignoreSelfPath = false } = {}, cb) {
+/*
+__mock/
+   react.js
+src/
+   __mock/
+      react.js
+ */
+
+function findUp(name, { dir, fs, _selfPath = dir, allowFile = true, allowDirectory = true, ignoreSelfPath = false } = {}, cb) {
   const isValid = (path, cb) => {
-    if (ignoreSelfPath && path.startsWith(dir)) {
+    if (ignoreSelfPath && nps.join(_selfPath, name).startsWith(path)) {
       return cb(null, false)
     }
 
@@ -56,7 +64,7 @@ function findUp(name, { dir, fs, allowFile = true, allowDirectory = true, ignore
           })
         }
 
-        return findUp(name, { fs, dir: parent, allowFile, allowDirectory }, cb)
+        return findUp(name, { fs, dir: parent, allowFile, allowDirectory, ignoreSelfPath, _selfPath }, cb)
       })
     } else {
       const parent = nps.dirname(dir)
@@ -67,7 +75,7 @@ function findUp(name, { dir, fs, allowFile = true, allowDirectory = true, ignore
         })
       }
 
-      return findUp(name, { fs, dir: parent, allowFile, allowDirectory, ignoreSelfPath }, cb)
+      return findUp(name, { fs, dir: parent, allowFile, allowDirectory, ignoreSelfPath, _selfPath }, cb)
     }
   })
 }
