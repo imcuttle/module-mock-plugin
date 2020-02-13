@@ -1,6 +1,6 @@
 {
   "name": "module-mock-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "description": "The plugin on enhanced-resolver for easy mock",
   "author": "imcuttle <moyuyc95@gmail.com>",
